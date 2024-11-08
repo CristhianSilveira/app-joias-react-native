@@ -1,40 +1,55 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, Image, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather'; // bilbioteca de icone
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Alert,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import * as SecureStore from 'expo-secure-store';
-
 
 const LoginScreen = ({ navigation, setIsAuthenticated }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert('Erro', 'Por favor, preencha todos os campos.');
       return;
     }
 
-    const exampleEmail = 'teste@email.com';
-    const examplePassword = '123456';
+    try {
+      const storedUser = await AsyncStorage.getItem('user'); //Pega os dados do async user
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
 
-    if (email === exampleEmail && password === examplePassword) {
-      Alert.alert('Sucesso', 'Login realizado com sucesso!');
-      setIsAuthenticated(true);
-      navigation.navigate('Main');
-    } else {
-      Alert.alert('Erro', 'E-mail ou senha incorretos.');
+        if (email === parsedUser.email && password === parsedUser.password) {
+          Alert.alert('Sucesso', 'Login realizado com sucesso!');
+          setTimeout(() => {
+          setIsAuthenticated(true);
+          navigation.navigate('Main');
+        }, 1000);
+          
+        } else {
+          Alert.alert('Erro', 'E-mail ou senha incorretos.');
+        }
+      } else {
+        Alert.alert('Erro', 'Nenhum usuário cadastrado.');
+      }
+    } catch (error) {
+      console.error('Erro ao verificar dados de login:', error);
+      Alert.alert('Erro', 'Houve um erro ao tentar fazer o login.');
     }
   };
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require('../assets/logo-joias.png')}
-        style={styles.logo}
-      />
+      <Image source={require('../assets/logo-joias.png')} style={styles.logo} />
 
       <Text style={styles.title}>Login</Text>
 
@@ -55,25 +70,21 @@ const LoginScreen = ({ navigation, setIsAuthenticated }) => {
           onChangeText={setPassword}
           secureTextEntry={!showPassword} // Alterna a exibição da senha
         />
-        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.showPasswordButton}>
+        <TouchableOpacity
+          onPress={() => setShowPassword(!showPassword)}
+          style={styles.showPasswordButton}>
           <Icon
-            name={showPassword ? 'eye-off' : 'eye'} // Ícone de "olho" para exibir e "olho com linha" para ocultar
+            name={showPassword ? 'eye-off' : 'eye'} // Ícone de "olho" para exibir e ocultar
             size={20}
-            color="#B29928" // Cor do ícone
+            color="#B29928"
           />
         </TouchableOpacity>
       </View>
 
-      <Button
-        title="Entrar"
-        onPress={handleLogin}
-        color="#B29928"
-      />
+      <Button title="Entrar" onPress={handleLogin} color="#B29928" />
 
       <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-        <Text style={styles.switchText}>
-          Não tem uma conta? Cadastre-se
-        </Text>
+        <Text style={styles.switchText}>Não tem uma conta? Cadastre-se</Text>
       </TouchableOpacity>
     </View>
   );
@@ -122,7 +133,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     borderRadius: 4,
     backgroundColor: '#fff',
-    paddingRight: 40, // Adiciona espaço para o ícone
+    paddingRight: 40,
   },
   showPasswordButton: {
     position: 'absolute',

@@ -1,29 +1,56 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Linking } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Linking, Alert } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const CartScreen = ({ route }) => {
-  const carrinho = route?.params?.carrinho || [];
 
-  const total = carrinho.reduce((sum, item) => sum + parseFloat(item.preco.replace('R$ ', '').replace('.', '').replace(',', '.')), 0);
+const CartScreen = ({ carrinho = [], setCarrinho }) => {
+  const total = carrinho.reduce((sum, item) => sum + (parseFloat(item.preco.replace('R$ ', '').replace('.', '').replace(',', '.')) * item.quantidade), 0 );
 
   const formatMessage = () => {
     let message = 'Olá, gostaria de realizar uma compra:\n\n';
     carrinho.forEach(item => {
-      message += `${item.nome} - ${item.preco}\n`;
+      message += `${item.nome} - ${item.preco} (Quantidade: ${item.quantidade})\n`;
     });
     message += `\nTotal: R$ ${total.toFixed(2).replace('.', ',')}`;
     return message;
   };
 
-  // Função para abrir o WhatsApp com a mensagem formatada
   const handleCheckout = () => {
-    const phoneNumber = '5511998765432'; // Substitua pelo número de WhatsApp do atendente
-    const message = formatMessage();
-    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    if (carrinho.length === 0) {
+      Alert.alert("Carrinho Vazio","Seu carrinho está vazio! Adicione itens para continuar.", [{ text: "OK" }]
+      );
+    } else {
+      const phoneNumber = '5521972074352';
+      const message = formatMessage();
+      const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
-    Linking.openURL(url)
-      .catch(err => console.error('Erro ao abrir o WhatsApp', err));
+      Linking.openURL(url).catch(err => console.error('Erro ao abrir o WhatsApp', err));
+    }
   };
+
+  const handleRemoveItem = (produto) => {
+    setCarrinho((prevCarrinho) => {
+      const produtoExistente = prevCarrinho.find(item => item.id === produto.id);
+      if (produtoExistente.quantidade > 1) {
+        return prevCarrinho.map(item =>
+          item.id === produto.id ? { ...item, quantidade: item.quantidade - 1 } : item
+        );
+      } else {
+        return prevCarrinho.filter(item => item.id !== produto.id);
+      }
+    });
+  };
+
+  const renderItem = ({ item }) => (
+    <View style={styles.itemContainer}>
+      <Text style={styles.itemName}>{item.nome}</Text>
+      <Text style={styles.itemPrice}>{item.preco}</Text>
+      <Text style={styles.itemQuantity}>{item.quantidade}x</Text>
+      <TouchableOpacity onPress={() => handleRemoveItem(item)}>
+        <Icon name="delete" size={24} color="red" />
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
@@ -31,13 +58,8 @@ const CartScreen = ({ route }) => {
 
       <FlatList
         data={carrinho}
-        renderItem={({ item }) => (
-          <View style={styles.itemContainer}>
-            <Text style={styles.itemName}>{item.nome}</Text>
-            <Text style={styles.itemPrice}>{item.preco}</Text>
-          </View>
-        )}
-        keyExtractor={item => item.id}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
       />
 
       <View style={styles.totalContainer}>
@@ -75,6 +97,9 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
   },
   itemName: {
+    fontSize: 16,
+  },
+  itemQuantity: {
     fontSize: 16,
   },
   itemPrice: {

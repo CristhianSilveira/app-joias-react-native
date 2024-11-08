@@ -4,7 +4,6 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 
-// Import screens
 import HomeScreen from './src/pages/HomeScreen';
 import CartScreen from './src/pages/CartScreen';
 import CategoryScreen from './src/pages/CategoryScreen';
@@ -21,39 +20,74 @@ const JewelryTabs = () => (
   <Tab.Navigator>
     <Tab.Screen name="Início" component={HomeScreen} />
     <Tab.Screen name="Categorias" component={CategoryScreen} />
+    <Tab.Screen name="Perfil" component={ProfileScreen} />
   </Tab.Navigator>
 );
 
-const DrawerNavigator = () => (
+const DrawerNavigator = ({setIsAuthenticated, adicionarAoCarrinho, carrinho, setCarrinho, }) => (
   <Drawer.Navigator initialRouteName="Início">
-    <Drawer.Screen name="Início" component={JewelryTabs} />
-    <Drawer.Screen name="Perfil" component={ProfileScreen} />
-    <Drawer.Screen name="Carrinho" component={CartScreen} />
+    <Drawer.Screen name="Início">
+      {(props) => (
+        <HomeScreen {...props} carrinho={carrinho} adicionarAoCarrinho={adicionarAoCarrinho} />
+      )}
+    </Drawer.Screen>
+    <Drawer.Screen name="Perfil">
+      {(props) => (
+        <ProfileScreen {...props} setIsAuthenticated={setIsAuthenticated} />
+      )}
+    </Drawer.Screen>
+    <Drawer.Screen name="Carrinho">
+      {(props) => (
+        <CartScreen {...props} carrinho={carrinho} setCarrinho={setCarrinho} />
+      )}
+    </Drawer.Screen>
     <Drawer.Screen name="Sobre" component={SobreScreen} />
   </Drawer.Navigator>
 );
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [carrinho, setCarrinho] = useState([]);
+
+  const adicionarAoCarrinho = (produto) => {
+    setCarrinho((prevCarrinho) => {
+      const produtoExistente = prevCarrinho.find(item => item.id === produto.id);
+      if (produtoExistente) {
+        return prevCarrinho.map(item =>
+          item.id === produto.id ? { ...item, quantidade: item.quantidade + 1 } : item
+        );
+      } else {
+        return [...prevCarrinho, { ...produto, quantidade: 1 }];
+      }
+    });
+  };
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isAuthenticated ? (
-          
-          <Stack.Screen name="Main" component={DrawerNavigator} />
+          <Stack.Screen name="Main">
+            {(props) => (
+              <DrawerNavigator
+                {...props}
+                setIsAuthenticated={setIsAuthenticated}
+                adicionarAoCarrinho={adicionarAoCarrinho}
+                carrinho={carrinho}
+                setCarrinho={setCarrinho}
+              />
+            )}
+          </Stack.Screen>
         ) : (
           <>
-            <Stack.Screen name="Login" options={{ headerShown: false }}>
+            <Stack.Screen name="Login">
               {(props) => (
-                <LoginScreen {...props} setIsAuthenticated={setIsAuthenticated} />
+                <LoginScreen
+                  {...props}
+                  setIsAuthenticated={setIsAuthenticated}
+                />
               )}
             </Stack.Screen>
-            <Stack.Screen
-              name="Signup"
-              component={SignupScreen}
-              options={{ headerShown: false }}
-            />
+            <Stack.Screen name="Signup" component={SignupScreen} />
           </>
         )}
       </Stack.Navigator>
