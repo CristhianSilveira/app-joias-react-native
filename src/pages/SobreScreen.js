@@ -32,7 +32,7 @@ const SobreScreen = () => {
           onPress={() =>
             Linking.openURL('https://biancabiaprata.bagypro.com/')
           }>
-          biacabiaprata.bagypro.com
+          biancabiaprata.bagypro.com
         </Text>
         {'\n'}Instagram:{' '}
         <Text
@@ -40,7 +40,7 @@ const SobreScreen = () => {
           onPress={() =>
             Linking.openURL('https://www.instagram.com/biancabiaprata/')
           }>
-          @biacabiaprata
+          @biancabiaprata
         </Text>
         {'\n'}Telefone:{' '}
         <Text
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 20,
-    backgroundColor: '#c9be95 ',
+    backgroundColor: '#c9be95',
     alignItems: 'center',
   },
   logo: {
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: 'bold',
-    color: '#B29928',
+    color: '#ffdb38',
     marginBottom: 15,
   },
   description: {
@@ -88,18 +88,18 @@ const styles = StyleSheet.create({
   contactTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#555',
+    color: '#232323',
     marginTop: 20,
   },
   contact: {
     fontSize: 16,
-    color: '#555',
+    color: '#232323',
     textAlign: 'center',
     marginBottom: 20,
     lineHeight: 22,
   },
   link: {
-    color: '#B29928',
+    color: '#ffdb38',
     textDecorationLine: 'underline',
   },
 });
