@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   switchText: {
-    color: '#B29928',
+    color: '#ffdb38',
     marginTop: 16,
     textAlign: 'center',
   },
