@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, StyleSheet, FlatList, Image, Button, Alert } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
@@ -21,7 +20,7 @@ const produtos = [
   },
   {
     id: '3',
-    nome: 'Anel mandala',
+    nome: 'Anel Mandala',
     preco: 'R$ 150,00',
     imagem: 'https://cdn.dooca.store/150052/products/bsbupirwzeoz1i0wltsenklwks2bhybvgsav_1600x1600+fill_ffffff.png?v=1708917851',
     categoria: 'Anéis',
@@ -35,7 +34,7 @@ const produtos = [
   },
   {
     id: '5',
-    nome: 'Brinco Corrente Estrela',
+    nome: 'Brinco de Corrente Estrela',
     preco: 'R$ 78,00',
     imagem: 'https://cdn.dooca.store/150052/products/lxjse1bk9xmouzqvcxkl0bpjwg9graqsa47u_1600x1600+fill_ffffff.png?v=1708917780',
     categoria: 'Brincos',
@@ -77,7 +76,7 @@ const produtos = [
   },
   {
     id: '11',
-    nome: 'Arco em V',
+    nome: 'Cordão Aro em V',
     preco: 'R$ 240,00',
     imagem: 'https://cdn.dooca.store/150052/products/ne68b5ppd2emdctv0wxzmwp27qz8qijoplfk_1600x1600+fill_ffffff.png?v=1708917316',
     categoria: 'Colares',
@@ -157,7 +156,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 20,
     paddingHorizontal: 16,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#c9be95',
   },
   title: {
     fontSize: 18,
@@ -181,9 +180,11 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   itemImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 8,
+    width: 85,
+    height: 85,
+    borderRadius: 30,
+    resizeMode: 'center',
+    overflow: 'hidden',
     marginRight: 16,
   },
   itemDetails: {
