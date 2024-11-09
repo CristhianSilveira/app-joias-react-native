@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -6,7 +6,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from './src/pages/HomeScreen';
 import CartScreen from './src/pages/CartScreen';
-import CategoryScreen from './src/pages/CategoryScreen';
 import ProfileScreen from './src/pages/ProfileScreen';
 import LoginScreen from './src/pages/LoginScreen';
 import SignupScreen from './src/pages/SignupScreen';

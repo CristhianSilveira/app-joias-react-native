@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Text,
   StyleSheet,
@@ -64,7 +63,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 20,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#c9be95 ',
     alignItems: 'center',
   },
   logo: {

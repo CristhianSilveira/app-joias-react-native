@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -41,14 +41,15 @@ const ProfileScreen = ({ navigation, setIsAuthenticated }) => {
 
   const handleSelectPhoto = () => {
     launchImageLibrary({ mediaType: 'photo', quality: 1 }, (response) => {
-      if (response.didCancel) {
-        console.log('O usuário cancelou a seleção da imagem');
-      } else if (response.errorCode) {
-        console.log('Erro ao selecionar a imagem: ', response.errorMessage);
-      } else {
-        setUserPhoto(response.assets[0].uri);
-      }
-    });
+  console.log('Resposta da galeria:', response);
+  if (response.didCancel) {
+    console.log('O usuário cancelou a seleção da imagem');
+  } else if (response.errorCode) {
+    console.log('Erro ao selecionar a imagem: ', response.errorMessage);
+  } else {
+    setUserPhoto(response.assets[0].uri);
+  }
+});
   };
 
   if (!user) {
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#c9be95',
   },
   title: {
     fontSize: 24,

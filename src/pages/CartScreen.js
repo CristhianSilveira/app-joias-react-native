@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Linking, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -77,7 +76,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#c9be95',
   },
   title: {
     fontSize: 24,
