@@ -65,7 +65,7 @@ const ProfileScreen = ({ navigation, setIsAuthenticated }) => {
     <View style={styles.container}>
       {isLoading ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#B29928" />
+          <ActivityIndicator size="large" color="#ffdb38" />
           <Text style={styles.loadingText}>Saindo...</Text>
         </View>
       ) : (
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 18,
     marginLeft: 10,
-    color: '#B29928',
+    color: '#ffdb38',
   },
 });
 
