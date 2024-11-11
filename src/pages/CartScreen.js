@@ -1,27 +1,30 @@
-import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Linking, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const CartScreen = ({ carrinho = [], setCarrinho }) => {
   const total = carrinho.reduce((sum, item) => sum + (parseFloat(item.preco.replace('R$ ', '').replace('.', '').replace(',', '.')) * item.quantidade), 0 );
 
-  const formatMessage = () => {
+  const formatMessage = async () => {
+    const storedUser = await AsyncStorage.getItem('user'); //Pega os dados do async user
+    const parsedUser = JSON.parse(storedUser);
     let message = 'Olá, gostaria de realizar uma compra:\n\n';
+    message += `*Meus Dados:* \nNome: ${parsedUser.name}\nEndereço: ${parsedUser.endereco} ${parsedUser.numero}, ${parsedUser.bairro} - ${parsedUser.estado}\nCEP: ${parsedUser.cep}\n\n *Produtos:*\n`;
     carrinho.forEach(item => {
       message += `${item.nome} - ${item.preco} (Quantidade: ${item.quantidade})\n`;
     });
-    message += `\nTotal: R$ ${total.toFixed(2).replace('.', ',')}`;
+    message += `\n*Total:* R$ ${total.toFixed(2).replace('.', ',')}`;
     return message;
   };
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (carrinho.length === 0) {
       Alert.alert("Carrinho Vazio","Seu carrinho está vazio! Adicione itens para continuar.", [{ text: "OK" }]
       );
     } else {
       const phoneNumber = '5521972074352';
-      const message = formatMessage();
+      const message = await formatMessage();
       const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
       Linking.openURL(url).catch(err => console.error('Erro ao abrir o WhatsApp', err));
@@ -77,7 +80,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#877a4e',
   },
   title: {
     fontSize: 24,

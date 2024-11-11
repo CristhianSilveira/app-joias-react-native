@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -41,14 +41,15 @@ const ProfileScreen = ({ navigation, setIsAuthenticated }) => {
 
   const handleSelectPhoto = () => {
     launchImageLibrary({ mediaType: 'photo', quality: 1 }, (response) => {
-      if (response.didCancel) {
-        console.log('O usuário cancelou a seleção da imagem');
-      } else if (response.errorCode) {
-        console.log('Erro ao selecionar a imagem: ', response.errorMessage);
-      } else {
-        setUserPhoto(response.assets[0].uri);
-      }
-    });
+  console.log('Resposta da galeria:', response);
+  if (response.didCancel) {
+    console.log('O usuário cancelou a seleção da imagem');
+  } else if (response.errorCode) {
+    console.log('Erro ao selecionar a imagem: ', response.errorMessage);
+  } else {
+    setUserPhoto(response.assets[0].uri);
+  }
+});
   };
 
   if (!user) {
@@ -64,7 +65,7 @@ const ProfileScreen = ({ navigation, setIsAuthenticated }) => {
     <View style={styles.container}>
       {isLoading ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#B29928" />
+          <ActivityIndicator size="large" color="#ffdb38" />
           <Text style={styles.loadingText}>Saindo...</Text>
         </View>
       ) : (
@@ -87,9 +88,22 @@ const ProfileScreen = ({ navigation, setIsAuthenticated }) => {
           </View>
 
           <View style={styles.userInfo}>
-            <Text style={styles.infoText}>Nome: {user.name}</Text>
-            <Text style={styles.infoText}>Email: {user.email}</Text>
-            <Text style={styles.infoText}>CEP: {user.cep}</Text>
+            <Text style={styles.info}>
+                Nome:{' '}
+                <Text style={styles.infoText}>{user.name}</Text>
+                {'\n'}Email:{' '}
+                <Text style={styles.infoText}>{user.email}</Text>
+                {'\n'}Endereço:{' '}
+                <Text style={styles.infoText}>{user.endereco}</Text>
+                {'\n'}Bairro:{' '}
+                <Text style={styles.infoText}>{user.bairro}</Text>
+                {'\n'}N°:{' '}
+                <Text style={styles.infoText}>{user.numero}</Text>
+                {'\n'}Estado:{' '}
+                <Text style={styles.infoText}>{user.estado}</Text>
+                {'\n'}CEP:{' '}
+                <Text style={styles.infoText}>{user.cep}</Text>
+            </Text>
           </View>
 
           <Button title="Deslogar" onPress={handleLogout} color="#B29928" />
@@ -105,7 +119,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#877a4e',
   },
   title: {
     fontSize: 24,
@@ -136,9 +150,17 @@ const styles = StyleSheet.create({
   userInfo: {
     marginBottom: 20,
   },
+  info:{
+    fontSize: 16,
+    color: '#555',
+    textAlign: 'center',
+    marginBottom: 20,
+    lineHeight: 22,
+  },
   infoText: {
     fontSize: 18,
     marginVertical: 5,
+    color: '#ffdb38',
   },
   loadingContainer: {
     flexDirection: 'row',
@@ -147,7 +169,7 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 18,
     marginLeft: 10,
-    color: '#B29928',
+    color: '#ffdb38',
   },
 });
 

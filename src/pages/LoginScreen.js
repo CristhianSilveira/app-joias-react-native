@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   View,
   Text,
@@ -96,13 +96,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 16,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#877a4e',
   },
   logo: {
     width: 100,
     height: 100,
     marginBottom: 24,
-    resizeMode: 'contain',
+    borderRadius: 50,
+    resizeMode: 'cover',
   },
   title: {
     fontSize: 24,
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   switchText: {
-    color: '#B29928',
+    color: '#ffdb38',
     marginTop: 16,
     textAlign: 'center',
   },

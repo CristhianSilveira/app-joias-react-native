@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,6 +13,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const SignupScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [cep, setCep] = useState('');
+  const [endereco, setEndereco] = useState('');
+  const [numero, setNumero] = useState('');
+  const [bairro, setBairro] = useState('');
+  const [estado, setEstado] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -24,6 +28,29 @@ const SignupScreen = ({ navigation }) => {
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const cepRegex = /^\d{5}\d{3}$/;
+
+  useEffect(() => {
+    if (cepRegex.test(cep)) {
+      buscaCep();
+    }
+  }, [cep]);
+
+  const buscaCep = async () => {
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await response.json();
+      if (data.erro) {
+        setCepError('CEP não encontrado.');
+      } else {
+        setEndereco(data.logradouro);
+        setBairro(data.bairro);
+        setEstado(data.estado);
+        setCepError('');
+      }
+    } catch (error) {
+      setCepError('Erro ao buscar o CEP.');
+    }
+  };
 
   const handleSignup = async () => {
     let isValid = true;
@@ -42,7 +69,7 @@ const SignupScreen = ({ navigation }) => {
       setCepError('O CEP é obrigatório.');
       isValid = false;
     } else if (!cepRegex.test(cep)) {
-      setEmailError('O CEP não é válido.');
+      setCepError('O CEP não é válido.');
       isValid = false;
     }
 
@@ -69,7 +96,7 @@ const SignupScreen = ({ navigation }) => {
       try {
         await AsyncStorage.setItem(
           'user',
-          JSON.stringify({ name, cep, email, password })
+          JSON.stringify({ name, cep, endereco, numero, estado, bairro, email, password })
         );
         Alert.alert('Cadastro Realizado', 'Usuário registrado com sucesso!');
         navigation.navigate('Login');
@@ -97,8 +124,38 @@ const SignupScreen = ({ navigation }) => {
         value={cep}
         onChangeText={setCep}
         maxLength={8}
+        keyboardType="numeric"
       />
       {cepError ? <Text style={styles.errorText}>{cepError}</Text> : null}
+
+      <TextInput
+        style={styles.input}
+        placeholder="Endereço"
+        value={endereco}
+        onChangeText={setEndereco}
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Número"
+        value={numero}
+        onChangeText={setNumero}
+        keyboardType="numeric"
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Bairro"
+        value={bairro}
+        onChangeText={setBairro}
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Estado"
+        value={estado}
+        onChangeText={setEstado}
+      />
 
       <TextInput
         style={styles.input}
@@ -148,7 +205,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 16,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#877a4e',
   },
   title: {
     fontSize: 24,
@@ -172,7 +229,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   switchText: {
-    color: '#B29928',
+    color: '#ffdb38',
     marginTop: 16,
     textAlign: 'center',
   },
