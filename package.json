@@ -29,8 +29,5 @@
     "react-native-vector-icons/MaterialIcons": "*",
     "react-native-vector-icons/Feather": "*"
   }
-  "devDependencies": {
-    "@babel/core": "^7.20.0"
-  },
   "private": true
 }
