@@ -28,6 +28,6 @@
     "@react-native-async-storage/async-storage": "1.23.1",
     "react-native-vector-icons/MaterialIcons": "*",
     "react-native-vector-icons/Feather": "*"
-  }
+  },
   "private": true
 }
