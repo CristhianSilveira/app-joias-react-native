@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import {
-  View,
+  ScrollView,
   Text,
   StyleSheet,
-  Button,
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  View
 } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileScreen = ({ navigation, setIsAuthenticated }) => {
@@ -39,17 +39,17 @@ const ProfileScreen = ({ navigation, setIsAuthenticated }) => {
     }, 2000);
   };
 
-  const handleSelectPhoto = () => {
-    launchImageLibrary({ mediaType: 'photo', quality: 1 }, (response) => {
-  console.log('Resposta da galeria:', response);
-  if (response.didCancel) {
-    console.log('O usuário cancelou a seleção da imagem');
-  } else if (response.errorCode) {
-    console.log('Erro ao selecionar a imagem: ', response.errorMessage);
-  } else {
-    setUserPhoto(response.assets[0].uri);
-  }
-});
+  const handleImagePicker = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      aspect: [4, 4],
+      allowsEditing: true,
+      base64: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setUserPhoto(result.assets[0].uri);
+    }
   };
 
   if (!user) {
@@ -62,7 +62,7 @@ const ProfileScreen = ({ navigation, setIsAuthenticated }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       {isLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#ffdb38" />
@@ -81,7 +81,7 @@ const ProfileScreen = ({ navigation, setIsAuthenticated }) => {
               style={styles.photo}
             />
             <TouchableOpacity
-              onPress={handleSelectPhoto}
+              onPress={handleImagePicker}
               style={styles.changePhotoButton}>
               <Text style={styles.changePhotoText}>Trocar Foto</Text>
             </TouchableOpacity>
@@ -89,42 +89,58 @@ const ProfileScreen = ({ navigation, setIsAuthenticated }) => {
 
           <View style={styles.userInfo}>
             <Text style={styles.info}>
-                Nome:{' '}
-                <Text style={styles.infoText}>{user.name}</Text>
-                {'\n'}Email:{' '}
-                <Text style={styles.infoText}>{user.email}</Text>
-                {'\n'}Endereço:{' '}
-                <Text style={styles.infoText}>{user.endereco}</Text>
-                {'\n'}Bairro:{' '}
-                <Text style={styles.infoText}>{user.bairro}</Text>
-                {'\n'}N°:{' '}
-                <Text style={styles.infoText}>{user.numero}</Text>
-                {'\n'}Estado:{' '}
-                <Text style={styles.infoText}>{user.estado}</Text>
-                {'\n'}CEP:{' '}
-                <Text style={styles.infoText}>{user.cep}</Text>
+              Nome:
+              <Text style={styles.infoText}> {user.name}</Text>
+            </Text>
+            <Text style={styles.info}>
+              Email:
+              <Text style={styles.infoText}> {user.email}</Text>
+            </Text>
+            <Text style={styles.info}>
+              Endereço:
+              <Text style={styles.infoText}> {user.endereco}</Text>
+            </Text>
+            <Text style={styles.info}>
+              Bairro:
+              <Text style={styles.infoText}> {user.bairro}</Text>
+            </Text>
+            <Text style={styles.info}>
+              N°:
+              <Text style={styles.infoText}> {user.numero}</Text>
+            </Text>
+            <Text style={styles.info}>
+              Estado:
+              <Text style={styles.infoText}> {user.estado}</Text>
+            </Text>
+            <Text style={styles.info}>
+              CEP:
+              <Text style={styles.infoText}> {user.cep}</Text>
             </Text>
           </View>
 
-          <Button title="Deslogar" onPress={handleLogout} color="#B29928" />
+          <TouchableOpacity style={styles.button} onPress={handleLogout}> 
+            <Text style={styles.buttonText}>Deslogar</Text>
+          </TouchableOpacity>
         </>
       )}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexGrow: 1,
     padding: 16,
-    backgroundColor: '#877a4e',
+    backgroundColor: '#c9be95',
+    alignItems: 'center',
+    paddingTop: 50,
+    marginTop: 40
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 25,
+    color: '#fff'
   },
   photoContainer: {
     marginBottom: 20,
@@ -148,19 +164,21 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   userInfo: {
-    marginBottom: 20,
+    textAlign: 'center',
+    marginBottom: 20
   },
   info:{
     fontSize: 16,
-    color: '#555',
-    textAlign: 'center',
-    marginBottom: 20,
+    color: '#232323',
+    fontWeight: 'bold',
     lineHeight: 22,
+    marginBottom: 10,
   },
   infoText: {
     fontSize: 18,
-    marginVertical: 5,
-    color: '#ffdb38',
+    marginVertical: 20,
+    fontWeight: 'normal',
+    color: '#785e08',
   },
   loadingContainer: {
     flexDirection: 'row',
@@ -170,6 +188,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginLeft: 10,
     color: '#ffdb38',
+  },
+  button: {
+    backgroundColor: '#B29928',
+    paddingVertical: 10,
+    paddingHorizontal: 50,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
   },
 });
 

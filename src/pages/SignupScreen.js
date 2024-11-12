@@ -33,7 +33,7 @@ const SignupScreen = ({ navigation }) => {
     if (cepRegex.test(cep)) {
       buscaCep();
     }
-  }, [cep]);
+  }, );
 
   const buscaCep = async () => {
     try {
@@ -208,10 +208,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#877a4e',
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
     marginBottom: 24,
     textAlign: 'center',
+    color: '#fff',
   },
   input: {
     width: '100%',

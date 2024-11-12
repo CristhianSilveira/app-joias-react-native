@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import { View } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { Badge } from 'react-native-elements'; 
+
 
 import HomeScreen from './src/pages/HomeScreen';
 import CartScreen from './src/pages/CartScreen';
@@ -11,37 +14,62 @@ import LoginScreen from './src/pages/LoginScreen';
 import SignupScreen from './src/pages/SignupScreen';
 import SobreScreen from './src/pages/SobreScreen';
 
-const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const JewelryTabs = () => (
-  <Tab.Navigator>
-    <Tab.Screen name="Início" component={HomeScreen} />
-    <Tab.Screen name="Categorias" component={CategoryScreen} />
-    <Tab.Screen name="Perfil" component={ProfileScreen} />
-  </Tab.Navigator>
-);
-
 const DrawerNavigator = ({setIsAuthenticated, adicionarAoCarrinho, carrinho, setCarrinho, }) => (
-  <Drawer.Navigator initialRouteName="Início">
-    <Drawer.Screen name="Início">
+  <Tab.Navigator
+    initialRouteName="Início"
+    screenOptions={({ route }) => ({
+      headerShown: false,
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
+        if (route.name === 'Início') {
+          iconName = focused ? 'home' : 'home-outline';
+        } else if (route.name === 'Carrinho') {
+          iconName = focused ? 'cart' : 'cart-outline';
+        } else if (route.name === 'Perfil') {
+          iconName = focused ? 'person' : 'person-outline';
+        } else if (route.name === 'Sobre') {
+          iconName = focused ? 'information-circle' : 'information-circle-outline';
+        }
+
+        if (route.name === 'Carrinho') {
+          return (
+            <View>
+              <Icon name={iconName} size={size} color={color} />
+              {carrinho.length > 0 && (
+                <Badge
+                  value={carrinho.length}
+                  status="error"
+                  containerStyle={{ position: 'absolute', top: -4, right: -4 }}
+                />
+              )}
+            </View>
+          );
+        }
+
+        return <Icon name={iconName} size={size} color={color} />;
+      },
+    })}
+  >
+    <Tab.Screen name="Início">
       {(props) => (
         <HomeScreen {...props} carrinho={carrinho} adicionarAoCarrinho={adicionarAoCarrinho} />
       )}
-    </Drawer.Screen>
-    <Drawer.Screen name="Perfil">
+    </Tab.Screen>
+    <Tab.Screen name="Perfil">
       {(props) => (
         <ProfileScreen {...props} setIsAuthenticated={setIsAuthenticated} />
       )}
-    </Drawer.Screen>
-    <Drawer.Screen name="Carrinho">
+    </Tab.Screen>
+    <Tab.Screen name="Carrinho">
       {(props) => (
         <CartScreen {...props} carrinho={carrinho} setCarrinho={setCarrinho} />
       )}
-    </Drawer.Screen>
-    <Drawer.Screen name="Sobre" component={SobreScreen} />
-  </Drawer.Navigator>
+    </Tab.Screen>
+    <Tab.Screen name="Sobre" component={SobreScreen} />
+  </Tab.Navigator>
 );
 
 const App = () => {

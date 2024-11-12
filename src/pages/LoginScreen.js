@@ -106,10 +106,11 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
     marginBottom: 24,
     textAlign: 'center',
+    color: '#fff'
   },
   input: {
     width: '100%',

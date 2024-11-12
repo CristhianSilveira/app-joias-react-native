@@ -80,12 +80,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#877a4e',
+    backgroundColor: '#c9be95',
+    paddingTop: 30,
+    marginTop: 40
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+    textAlign: 'center',
+    color: '#fff'
   },
   itemContainer: {
     flexDirection: 'row',

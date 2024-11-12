@@ -120,17 +120,17 @@ const HomeScreen = ({ carrinho = [], adicionarAoCarrinho }) => {
   return (
     <Tab.Navigator
   screenOptions={{
-    // Cor do texto das abas
     tabBarLabelStyle: { 
       fontSize: 12, 
       fontWeight: 'bold', 
-      color: '#ffffff'
+      color: '#ffffff',
     },
     tabBarIndicatorStyle: { 
       backgroundColor: '#FFFFFF' // Altere a cor do indicador da aba ativa
     },
     tabBarStyle: { 
-      backgroundColor: '#7d6c1d' // Altere a cor de fundo da barra superior
+      backgroundColor: '#7d6c1d',
+      marginTop: 40 // Altere a cor de fundo da barra superior
     },
   }}
 >
@@ -153,9 +153,9 @@ const HomeScreen = ({ carrinho = [], adicionarAoCarrinho }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
     paddingHorizontal: 16,
-    backgroundColor: '#877a4e',
+    backgroundColor: '#c9be95',
+    paddingTop: 20
   },
   listContainer: {
     paddingBottom: 20,

@@ -63,8 +63,10 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 20,
-    backgroundColor: '#877a4e',
+    backgroundColor: '#c9be95',
     alignItems: 'center',
+    paddingTop: 50,
+    marginTop: 40
   },
   logo: {
     width: 120,
@@ -82,25 +84,29 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 20,
-    color: '#333',
+    color: '#785e08',
     lineHeight: 22,
+    fontWeight: 'bold',
   },
   contactTitle: {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#232323',
     marginTop: 20,
+    marginBottom: 20,
   },
   contact: {
     fontSize: 16,
     color: '#232323',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 15,
     lineHeight: 22,
+    fontWeight: 'bold',
   },
   link: {
-    color: '#ffdb38',
+    color: '#785e08',
     textDecorationLine: 'underline',
+    fontWeight: 'normal',
   },
 });
 
