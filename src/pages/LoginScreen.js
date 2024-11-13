@@ -16,10 +16,13 @@ const LoginScreen = ({ navigation, setIsAuthenticated }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleLogin = async () => {
+    setErrorMessage('');
+
     if (!email || !password) {
-      Alert.alert('Erro', 'Por favor, preencha todos os campos.');
+      setErrorMessage('Por favor, preencha todos os campos.');
       return;
     }
 
@@ -36,14 +39,14 @@ const LoginScreen = ({ navigation, setIsAuthenticated }) => {
         }, 1000);
           
         } else {
-          Alert.alert('Erro', 'E-mail ou senha incorretos.');
+          setErrorMessage('E-mail ou senha incorretos.');
         }
       } else {
-        Alert.alert('Erro', 'Nenhum usuário cadastrado.');
+        setErrorMessage('Nenhum usuário cadastrado.');
       }
     } catch (error) {
       console.error('Erro ao verificar dados de login:', error);
-      Alert.alert('Erro', 'Houve um erro ao tentar fazer o login.');
+      setErrorMessage('Houve um erro ao tentar fazer o login.');
     }
   };
 
@@ -80,6 +83,8 @@ const LoginScreen = ({ navigation, setIsAuthenticated }) => {
           />
         </TouchableOpacity>
       </View>
+
+      {errorMessage ? <Text testID="error-message" style={styles.errorText}>{errorMessage}</Text> : null}
 
       <Button title="Entrar" onPress={handleLogin} color="#B29928" />
 
@@ -148,6 +153,11 @@ const styles = StyleSheet.create({
     color: '#ffdb38',
     marginTop: 16,
     textAlign: 'center',
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 16,
+    fontSize: 14,
   },
 });
 

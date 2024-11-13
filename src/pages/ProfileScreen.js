@@ -22,6 +22,11 @@ const ProfileScreen = ({ navigation, setIsAuthenticated }) => {
         const storedUser = await AsyncStorage.getItem('user');
         const parsedUser = JSON.parse(storedUser);
         setUser(parsedUser); // Seta os dados do async para user
+
+        const storedPhotoUri = await AsyncStorage.getItem('userPhoto');
+        if (storedPhotoUri) {
+          setUserPhoto(storedPhotoUri);
+        }
       } catch (error) {
         console.log('Erro ao carregar os dados do usuário', error);
       }
@@ -48,7 +53,13 @@ const ProfileScreen = ({ navigation, setIsAuthenticated }) => {
     });
 
     if (!result.canceled) {
-      setUserPhoto(result.assets[0].uri);
+      const uri = result.assets[0].uri;
+      setUserPhoto(uri);
+      try {
+        await AsyncStorage.setItem('userPhoto', uri);
+      } catch (error) {
+        console.log('Erro ao salvar a foto do usuário', error);
+      }
     }
   };
 
@@ -181,13 +192,14 @@ const styles = StyleSheet.create({
     color: '#785e08',
   },
   loadingContainer: {
-    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   loadingText: {
-    fontSize: 18,
+    fontSize: 30,
     marginLeft: 10,
-    color: '#ffdb38',
+    color: '#ffffff',
   },
   button: {
     backgroundColor: '#B29928',
